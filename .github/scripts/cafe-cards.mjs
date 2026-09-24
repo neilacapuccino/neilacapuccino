@@ -15,6 +15,13 @@ const LANG_COUNT = 6;
 // light cappuccino palette, used in both light and dark GitHub themes
 const LATTE = { bg: "#FFF8F0", border: "#EFE0CF", title: "#8A5A44", text: "#4B2E24", muted: "#B08A70", bean: "#D6A47A", beanLine: "#FFF8F0", heart: "#E58FA5", saucer: "#F6E7D8", cup: "#FFFDF9", rim: "#D6A47A", track: "#F3E6D8" };
 const DEFAULT_THEMES = { light: LATTE, dark: LATTE };
+// café menu tones: each stat card is a different drink, deeper than the project cards above it
+const CARD_TONES = {
+  stats: { bg: "#EAD5C1", border: "#D5B99E", saucer: "#DFC5AC", track: "#DFC5AC", beanLine: "#EAD5C1", muted: "#9A7157" },
+  langs: { bg: "#F2DDD6", border: "#DDC1B8", saucer: "#E8CFC7", track: "#E8CFC7", beanLine: "#F2DDD6", muted: "#9A7157" },
+  streak: { bg: "#F1DCC0", border: "#DCBF9C", saucer: "#E7CEAE", track: "#E7CEAE", beanLine: "#F1DCC0", muted: "#9A7157" },
+};
+const tone = (t, kind) => (process.env.THEMES_JSON ? t : { ...t, ...CARD_TONES[kind] });
 const THEMES = process.env.THEMES_JSON ? JSON.parse(fs.readFileSync(process.env.THEMES_JSON, "utf8")) : DEFAULT_THEMES;
 
 // ---------- data ----------
@@ -288,17 +295,17 @@ const data = await loadData();
 fs.mkdirSync(OUT, { recursive: true });
 let wrote = 0;
 if (data.contrib || data.stars != null || data.repos != null) {
-  for (const [name, t] of Object.entries(THEMES)) fs.writeFileSync(path.join(OUT, `stats-${name}.svg`), statsCard(data, t));
+  for (const [name, t] of Object.entries(THEMES)) fs.writeFileSync(path.join(OUT, `stats-${name}.svg`), statsCard(data, tone(t, "stats")));
   wrote++;
 }
 const langs = data.languages ? langsData(data.languages) : [];
 if (langs.length) {
-  for (const [name, t] of Object.entries(THEMES)) fs.writeFileSync(path.join(OUT, `top-langs-${name}.svg`), langsCard(langs, t));
+  for (const [name, t] of Object.entries(THEMES)) fs.writeFileSync(path.join(OUT, `top-langs-${name}.svg`), langsCard(langs, tone(t, "langs")));
   wrote++;
 }
 const streak = streakData(data.calendar?.days);
 if (streak) {
-  for (const [name, t] of Object.entries(THEMES)) fs.writeFileSync(path.join(OUT, `streak-${name}.svg`), streakCard(streak, t));
+  for (const [name, t] of Object.entries(THEMES)) fs.writeFileSync(path.join(OUT, `streak-${name}.svg`), streakCard(streak, tone(t, "streak")));
   wrote++;
 }
 const compact = (n) => (n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e4 ? `${(n / 1e3).toFixed(1)}k` : fmt(n));

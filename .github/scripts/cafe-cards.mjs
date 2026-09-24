@@ -63,13 +63,41 @@ async function loadData() {
     { login: LOGIN },
   ))?.user?.contributionsCollection);
   const calendar = await safe(loadCalendar);
+  const loc = await safe(() => loadLinesOfCode((langs?.nodes || []).map((r) => r.name)));
   return {
     repos: langs?.total ?? stars?.total ?? null,
     languages: langs?.nodes ?? null,
     stars: stars?.nodes?.length ? stars.nodes.reduce((a, r) => a + (r.stargazerCount || 0), 0) : null,
     contrib: contrib ?? null,
     calendar: calendar ?? null,
+    loc: loc ?? null,
   };
+}
+
+async function rest(url) {
+  const res = await fetch(`https://api.github.com${url}`, {
+    headers: { Authorization: `Bearer ${TOKEN}`, Accept: "application/vnd.github+json", "User-Agent": "cafe-cards" },
+  });
+  return { status: res.status, body: res.status === 200 ? await res.json() : null };
+}
+
+// net lines (added minus deleted) the owner wrote across their own public repos
+async function loadLinesOfCode(names) {
+  let net = 0;
+  let counted = 0;
+  for (const name of names) {
+    for (let attempt = 0; attempt < 6; attempt++) {
+      const { status, body } = await rest(`/repos/${LOGIN}/${name}/stats/contributors`);
+      if (status === 202) { await new Promise((r) => setTimeout(r, 3000)); continue; }
+      if (Array.isArray(body)) {
+        const me = body.find((c) => c.author?.login?.toLowerCase() === LOGIN.toLowerCase());
+        if (me) net += me.weeks.reduce((a, w) => a + w.a - w.d, 0);
+        counted++;
+      }
+      break;
+    }
+  }
+  return counted ? Math.max(net, 0) : null;
 }
 
 async function loadCalendar() {
@@ -77,18 +105,21 @@ async function loadCalendar() {
   if (!created) return null;
   const now = new Date();
   const byDate = new Map();
+  let commits = 0;
   for (let y = new Date(created).getUTCFullYear(); y <= now.getUTCFullYear(); y++) {
     const from = `${y}-01-01T00:00:00Z`;
     const to = y === now.getUTCFullYear() ? now.toISOString() : `${y}-12-31T23:59:59Z`;
     const data = await gql(
-      `query($login:String!,$from:DateTime!,$to:DateTime!){user(login:$login){contributionsCollection(from:$from,to:$to){contributionCalendar{weeks{contributionDays{date contributionCount}}}}}}`,
+      `query($login:String!,$from:DateTime!,$to:DateTime!){user(login:$login){contributionsCollection(from:$from,to:$to){totalCommitContributions contributionCalendar{weeks{contributionDays{date contributionCount}}}}}}`,
       { login: LOGIN, from, to },
     );
+    commits += data?.user?.contributionsCollection?.totalCommitContributions || 0;
     for (const w of data?.user?.contributionsCollection?.contributionCalendar?.weeks || [])
       for (const d of w.contributionDays) byDate.set(d.date, d.contributionCount);
   }
   const today = now.toISOString().slice(0, 10);
-  return [...byDate.entries()].filter(([d]) => d <= today).sort(([a], [b]) => (a < b ? -1 : 1)).map(([date, count]) => ({ date, count }));
+  const days = [...byDate.entries()].filter(([d]) => d <= today).sort(([a], [b]) => (a < b ? -1 : 1)).map(([date, count]) => ({ date, count }));
+  return { days, commits };
 }
 
 // ---------- drawing helpers ----------
@@ -267,11 +298,19 @@ if (langs.length) {
   for (const [name, t] of Object.entries(THEMES)) fs.writeFileSync(path.join(OUT, `top-langs-${name}.svg`), langsCard(langs, t));
   wrote++;
 }
-const streak = streakData(data.calendar);
+const streak = streakData(data.calendar?.days);
 if (streak) {
   for (const [name, t] of Object.entries(THEMES)) fs.writeFileSync(path.join(OUT, `streak-${name}.svg`), streakCard(streak, t));
   wrote++;
 }
+const compact = (n) => (n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e4 ? `${(n / 1e3).toFixed(1)}k` : fmt(n));
+const badgePath = path.join(OUT, "badges.json");
+let badges = {};
+try { badges = JSON.parse(fs.readFileSync(badgePath, "utf8")); } catch {}
+if (data.calendar?.commits) badges.commits = fmt(data.calendar.commits);
+if (data.loc != null) badges.loc = compact(data.loc);
+if (Object.keys(badges).length) { fs.writeFileSync(badgePath, JSON.stringify(badges, null, 2) + "\n"); wrote++; }
+console.log(JSON.stringify({ badges }));
 console.log(JSON.stringify({ streak: streak && { total: streak.total, first: streak.first, cur: streak.cur, best: streak.best } }));
 console.log(JSON.stringify({ repos: data.repos, stars: data.stars, contrib: data.contrib, langs: langs.map((l) => `${l.name} ${l.pct.toFixed(1)}%`) }));
 if (!wrote) {

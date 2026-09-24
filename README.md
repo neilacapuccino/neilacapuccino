@@ -9,9 +9,8 @@
 
 <img src="https://komarev.com/ghpvc/?username=neilacapuccino&label=visitors&color=e58fa5&style=flat-square" alt="profile visitors">
 <img src="https://img.shields.io/badge/role-full--stack_developer-D9B38C?style=flat-square&labelColor=4B2E24" alt="role: full-stack developer">
-<img src="https://img.shields.io/badge/stack-T3-EBCFB2?style=flat-square&labelColor=4B2E24" alt="stack: T3">
-<img src="https://img.shields.io/badge/also-UI_design-F2A7B8?style=flat-square&labelColor=4B2E24" alt="also: UI design">
-<img src="https://img.shields.io/badge/fueled_by-cappuccino-B9835A?style=flat-square&logo=buymeacoffee&logoColor=white&labelColor=4B2E24" alt="fueled by cappuccino">
+<img src="https://img.shields.io/badge/edits_in-Photoshop-EBCFB2?style=flat-square&labelColor=4B2E24" alt="edits in Photoshop">
+<img src="https://img.shields.io/badge/also-photographer-F2A7B8?style=flat-square&labelColor=4B2E24" alt="also a photographer">
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/divider-dark.svg">

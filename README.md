@@ -34,6 +34,15 @@ const barista = {
 
 <div align="center">
 
+### ✦ growing grass <sub><sup>草</sup></sub>
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/neilacapuccino/neilacapuccino/output/snake-dark.svg">
+    <img src="https://raw.githubusercontent.com/neilacapuccino/neilacapuccino/output/snake-light.svg" width="100%" alt="a pink snake eating the contribution graph">
+  </picture>
+</p>
+
 ### ✦ tools of the trade <sub><sup>使っている技術</sup></sub>
 
 <picture>
@@ -108,15 +117,6 @@ const barista = {
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./profile/streak-dark.svg">
     <img src="./profile/streak-light.svg" height="150" alt="contribution streak">
-  </picture>
-</p>
-
-### ✦ growing grass <sub><sup>草</sup></sub>
-
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/neilacapuccino/neilacapuccino/output/snake-dark.svg">
-    <img src="https://raw.githubusercontent.com/neilacapuccino/neilacapuccino/output/snake-light.svg" width="100%" alt="a pink snake eating the contribution graph">
   </picture>
 </p>
 

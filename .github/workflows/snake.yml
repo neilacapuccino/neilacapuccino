@@ -1,0 +1,30 @@
+name: grow the snake
+
+on:
+  schedule:
+    - cron: "0 */12 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  snake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: Platane/snk/svg-only@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            dist/snake-light.svg?color_snake=#E58FA5&color_dots=#F3E9DF,#EBCFB2,#D9AE86,#B9835A,#8A5A44
+            dist/snake-dark.svg?color_snake=#F2A7B8&color_dots=#2A211D,#5A4033,#8A5A44,#C08A62,#E9C29C
+
+      - uses: crazy-max/ghaction-github-pages@v5
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

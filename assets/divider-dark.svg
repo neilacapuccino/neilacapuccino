@@ -20,7 +20,7 @@
 @keyframes z{0%{opacity:0;transform:translate(0,8px)}30%{opacity:1}100%{opacity:0;transform:translate(10px,-14px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}.steam,.z{opacity:.8}}
 </style>
-<path d="M60 20H440" stroke="#4A3830" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 14"/><path d="M560 20H940" stroke="#4A3830" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 14"/>
-<g class="twinkle"><path transform="translate(466 20) scale(1.3)" fill="#F2A7B8" d="M0 3.2C-4.2 0.2-6.4-3.2-4.4-5.6C-2.9-7.3-0.8-6.8 0-5C0.8-6.8 2.9-7.3 4.4-5.6C6.4-3.2 4.2 0.2 0 3.2Z"/></g><g fill="#C08A62" transform="translate(500 20)"><ellipse cx="0" cy="3.5" rx="7.2" ry="6"/><circle cx="-8.4" cy="-4.2" r="3.1"/><circle cx="-3" cy="-9" r="3.1"/><circle cx="3" cy="-9" r="3.1"/><circle cx="8.4" cy="-4.2" r="3.1"/></g>
-<g class="twinkle" style="animation-delay:1.3s"><path transform="translate(534 20) scale(1.3)" fill="#F2A7B8" d="M0 3.2C-4.2 0.2-6.4-3.2-4.4-5.6C-2.9-7.3-0.8-6.8 0-5C0.8-6.8 2.9-7.3 4.4-5.6C6.4-3.2 4.2 0.2 0 3.2Z"/></g>
+<path d="M60 20H440" stroke="#E3CDB8" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 14"/><path d="M560 20H940" stroke="#E3CDB8" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 14"/>
+<g class="twinkle"><path transform="translate(466 20) scale(1.3)" fill="#E58FA5" d="M0 3.2C-4.2 0.2-6.4-3.2-4.4-5.6C-2.9-7.3-0.8-6.8 0-5C0.8-6.8 2.9-7.3 4.4-5.6C6.4-3.2 4.2 0.2 0 3.2Z"/></g><g fill="#D6A47A" transform="translate(500 20)"><ellipse cx="0" cy="3.5" rx="7.2" ry="6"/><circle cx="-8.4" cy="-4.2" r="3.1"/><circle cx="-3" cy="-9" r="3.1"/><circle cx="3" cy="-9" r="3.1"/><circle cx="8.4" cy="-4.2" r="3.1"/></g>
+<g class="twinkle" style="animation-delay:1.3s"><path transform="translate(534 20) scale(1.3)" fill="#E58FA5" d="M0 3.2C-4.2 0.2-6.4-3.2-4.4-5.6C-2.9-7.3-0.8-6.8 0-5C0.8-6.8 2.9-7.3 4.4-5.6C6.4-3.2 4.2 0.2 0 3.2Z"/></g>
 </svg>

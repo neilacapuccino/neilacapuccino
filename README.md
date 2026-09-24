@@ -44,41 +44,18 @@
 
 ### ✦ on the menu <sub><sup>作品</sup></sub>
 
-<table align="center">
-  <tr>
-    <th></th><th align="left">project</th><th align="left">what it is</th><th align="left">brewed with</th>
-  </tr>
-  <tr>
-    <td>🏦</td>
-    <td><a href="https://github.com/neilacapuccino/gobank-express"><b>GoBank Express</b></a></td>
-    <td>mobile first neobank with goal based savings, instant transfers, bill pay and rewards</td>
-    <td>Next.js · tRPC · Prisma · Neon</td>
-  </tr>
-  <tr>
-    <td>🗺️</td>
-    <td><a href="https://github.com/YusCML/6SEven"><b>6SEven</b></a></td>
-    <td>map based web app built with a team</td>
-    <td>T3 stack</td>
-  </tr>
-  <tr>
-    <td>🛍️</td>
-    <td><a href="https://github.com/neilacapuccino/gearhub"><b>GearHub</b></a><br><sub><a href="https://lab-2-se2.vercel.app">live demo ↗</a></sub></td>
-    <td>tech accessories storefront with filters, a cart and simulated checkout</td>
-    <td>React 19 · Vite · Tailwind 4</td>
-  </tr>
-  <tr>
-    <td>🎓</td>
-    <td><a href="https://github.com/zarkysgascon/GradeSeer"><b>GradeSeer</b></a></td>
-    <td>helps students calculate their grades</td>
-    <td>TypeScript</td>
-  </tr>
-  <tr>
-    <td>👁️</td>
-    <td><a href="https://github.com/neilacapuccino/omniview-ctrlzhong"><b>OmniView</b></a></td>
-    <td>Flutter app with YOLOv5 object detection, scene recognition, hand gestures and image to speech</td>
-    <td>Flutter · Python · PyTorch</td>
-  </tr>
-</table>
+<p align="center">
+  <a href="https://github.com/neilacapuccino/gobank-express"><img src="./assets/project-gobank-express-light.svg" width="48%" alt="GoBank Express"></a>
+  <a href="https://github.com/YusCML/6SEven"><img src="./assets/project-6seven-light.svg" width="48%" alt="6SEven"></a>
+  <a href="https://github.com/neilacapuccino/gearhub"><img src="./assets/project-gearhub-light.svg" width="48%" alt="GearHub"></a>
+  <a href="https://github.com/zarkysgascon/GradeSeer"><img src="./assets/project-gradeseer-light.svg" width="48%" alt="GradeSeer"></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/neilacapuccino/omniview-ctrlzhong"><img src="./assets/project-omniview-light.svg" width="48%" alt="OmniView"></a>
+</p>
+
+<sub><a href="https://lab-2-se2.vercel.app">GearHub live demo ↗</a></sub>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/divider-dark.svg">

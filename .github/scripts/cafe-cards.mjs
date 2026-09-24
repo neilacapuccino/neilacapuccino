@@ -12,12 +12,10 @@ const OUT = process.env.OUT_DIR || "profile";
 const HIDE = new Set(["cmake", "c++", "c", "swift", "makefile", "jupyter notebook", "dockerfile", "batchfile", "objective-c", "ruby"]);
 const LANG_COUNT = 6;
 
-const THEMES = {
-  light: { bg: "#FFF8F0", border: "#EFE0CF", title: "#8A5A44", text: "#4B2E24", muted: "#B08A70", bean: "#D6A47A", beanLine: "#FFF8F0",
-    heart: "#E58FA5", saucer: "#F6E7D8", cup: "#FFFDF9", rim: "#D6A47A", track: "#F3E6D8" },
-  dark: { bg: "#231A17", border: "#3A2C26", title: "#F2A7B8", text: "#F8EDE2", muted: "#A48877", bean: "#C08A62", beanLine: "#231A17",
-    heart: "#F2A7B8", saucer: "#2E221E", cup: "#33261F", rim: "#C08A62", track: "#3A2C26" },
-};
+// light cappuccino palette, used in both light and dark GitHub themes
+const LATTE = { bg: "#FFF8F0", border: "#EFE0CF", title: "#8A5A44", text: "#4B2E24", muted: "#B08A70", bean: "#D6A47A", beanLine: "#FFF8F0", heart: "#E58FA5", saucer: "#F6E7D8", cup: "#FFFDF9", rim: "#D6A47A", track: "#F3E6D8" };
+const DEFAULT_THEMES = { light: LATTE, dark: LATTE };
+const THEMES = process.env.THEMES_JSON ? JSON.parse(fs.readFileSync(process.env.THEMES_JSON, "utf8")) : DEFAULT_THEMES;
 
 // ---------- data ----------
 async function gql(query, variables = {}) {

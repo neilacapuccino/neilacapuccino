@@ -8,8 +8,8 @@
 <br>
 
 <img src="https://komarev.com/ghpvc/?username=neilacapuccino&label=visitors&color=e58fa5&style=flat-square" alt="profile visitors">
-<img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fneilacapuccino%2Fneilacapuccino%2Fmain%2Fprofile%2Fbadges.json&query=%24.commits&label=commits&color=D9B38C&labelColor=4B2E24&style=flat-square&cacheSeconds=3600" alt="total commits">
-<img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fneilacapuccino%2Fneilacapuccino%2Fmain%2Fprofile%2Fbadges.json&query=%24.loc&label=lines%20of%20code&color=EBCFB2&labelColor=4B2E24&style=flat-square&cacheSeconds=3600" alt="lines of code">
+<img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fneilacapuccino%2Fneilacapuccino%2Fmain%2Fprofile%2Fbadges.json&query=%24.commits&label=commits&color=D9B38C&labelColor=4B2E24&style=flat-square&cacheSeconds=1800" alt="total commits">
+<img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fneilacapuccino%2Fneilacapuccino%2Fmain%2Fprofile%2Fbadges.json&query=%24.loc&label=lines%20of%20code&color=EBCFB2&labelColor=4B2E24&style=flat-square&cacheSeconds=1800" alt="lines of code">
 <img src="https://img.shields.io/badge/software_engineer-4B2E24?style=flat-square" alt="software engineer">
 <img src="https://img.shields.io/badge/Photoshop-EBCFB2?style=flat-square" alt="Photoshop">
 <img src="https://img.shields.io/badge/photographer-F2A7B8?style=flat-square" alt="photographer">

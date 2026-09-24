@@ -62,12 +62,33 @@ async function loadData() {
     `query($login:String!){user(login:$login){contributionsCollection{totalCommitContributions totalPullRequestContributions totalIssueContributions contributionCalendar{totalContributions}}}}`,
     { login: LOGIN },
   ))?.user?.contributionsCollection);
+  const calendar = await safe(loadCalendar);
   return {
     repos: langs?.total ?? stars?.total ?? null,
     languages: langs?.nodes ?? null,
     stars: stars?.nodes?.length ? stars.nodes.reduce((a, r) => a + (r.stargazerCount || 0), 0) : null,
     contrib: contrib ?? null,
+    calendar: calendar ?? null,
   };
+}
+
+async function loadCalendar() {
+  const created = (await gql(`query($login:String!){user(login:$login){createdAt}}`, { login: LOGIN }))?.user?.createdAt;
+  if (!created) return null;
+  const now = new Date();
+  const byDate = new Map();
+  for (let y = new Date(created).getUTCFullYear(); y <= now.getUTCFullYear(); y++) {
+    const from = `${y}-01-01T00:00:00Z`;
+    const to = y === now.getUTCFullYear() ? now.toISOString() : `${y}-12-31T23:59:59Z`;
+    const data = await gql(
+      `query($login:String!,$from:DateTime!,$to:DateTime!){user(login:$login){contributionsCollection(from:$from,to:$to){contributionCalendar{weeks{contributionDays{date contributionCount}}}}}}`,
+      { login: LOGIN, from, to },
+    );
+    for (const w of data?.user?.contributionsCollection?.contributionCalendar?.weeks || [])
+      for (const d of w.contributionDays) byDate.set(d.date, d.contributionCount);
+  }
+  const today = now.toISOString().slice(0, 10);
+  return [...byDate.entries()].filter(([d]) => d <= today).sort(([a], [b]) => (a < b ? -1 : 1)).map(([date, count]) => ({ date, count }));
 }
 
 // ---------- drawing helpers ----------
@@ -180,6 +201,59 @@ function langsCard(langs, t) {
   return frame(W, H, t, out.join("\n"), "most brewed languages");
 }
 
+function streakData(days) {
+  if (!days?.length) return null;
+  const total = days.reduce((a, d) => a + d.count, 0);
+  const first = days.find((d) => d.count > 0)?.date ?? days[0].date;
+  let best = { len: 0, start: null, end: null };
+  let run = { len: 0, start: null };
+  for (const d of days) {
+    if (d.count > 0) {
+      if (!run.len) run.start = d.date;
+      run.len++;
+      if (run.len > best.len) best = { len: run.len, start: run.start, end: d.date };
+    } else run = { len: 0, start: null };
+  }
+  let i = days.length - 1;
+  if (days[i].count === 0) i--; // today can still be saved, so it does not break the streak yet
+  let cur = { len: 0, start: null, end: i >= 0 ? days[i].date : null };
+  while (i >= 0 && days[i].count > 0) { cur.len++; cur.start = days[i].date; i--; }
+  return { total, first, best, cur };
+}
+
+const fmtDate = (iso, withYear = true) =>
+  new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", ...(withYear ? { year: "numeric" } : {}), timeZone: "UTC" });
+const range = (a, b) => {
+  if (!a) return "no streak yet";
+  const thisYear = String(new Date().getUTCFullYear());
+  const sameYear = a.slice(0, 4) === b.slice(0, 4);
+  if (a === b) return fmtDate(a, a.slice(0, 4) !== thisYear);
+  if (!sameYear) return `${fmtDate(a)} to ${fmtDate(b)}`;
+  return `${fmtDate(a, false)} to ${fmtDate(b, false)}${a.slice(0, 4) === thisYear ? "" : `, ${a.slice(0, 4)}`}`;
+};
+
+function streakCard(s, t) {
+  const W = 520, H = 170;
+  const cols = [96, 260, 424];
+  const out = [
+    `<path d="M178 34V136M342 34V136" stroke="${t.border}" stroke-width="1.5"/>`,
+    text(fmt(s.total), { x: cols[0], y: 82, size: 30, weight: 600, fill: t.text, anchor: "middle" }).svg,
+    text("total contributions", { x: cols[0], y: 108, size: 13, weight: 500, fill: t.text, anchor: "middle" }).svg,
+    text(`since ${fmtDate(s.first)}`, { x: cols[0], y: 128, size: 11, weight: 500, fill: t.muted, anchor: "middle" }).svg,
+    `<circle cx="${cols[1]}" cy="66" r="44" fill="${t.saucer}"/>`,
+    `<path d="M${cols[1] + 30} 55h9a11 11 0 0 1 0 22h-9" fill="none" stroke="${t.rim}" stroke-width="5" stroke-linecap="round"/>`,
+    `<circle cx="${cols[1]}" cy="66" r="33" fill="${t.cup}" stroke="${t.heart}" stroke-width="4.5"/>`,
+    heart(cols[1], 26, 1.6, t.heart),
+    text(fmt(s.cur.len), { x: cols[1], y: 77, size: 28, weight: 600, fill: t.text, anchor: "middle" }).svg,
+    text("current streak", { x: cols[1], y: 130, size: 13.5, weight: 600, fill: t.title, anchor: "middle" }).svg,
+    text(range(s.cur.start, s.cur.end), { x: cols[1], y: 150, size: 11, weight: 500, fill: t.muted, anchor: "middle" }).svg,
+    text(fmt(s.best.len), { x: cols[2], y: 82, size: 30, weight: 600, fill: t.text, anchor: "middle" }).svg,
+    text("longest streak", { x: cols[2], y: 108, size: 13, weight: 500, fill: t.text, anchor: "middle" }).svg,
+    text(range(s.best.start, s.best.end), { x: cols[2], y: 128, size: 11, weight: 500, fill: t.muted, anchor: "middle" }).svg,
+  ];
+  return frame(W, H, t, out.join("\n"), "contribution streak");
+}
+
 // ---------- main ----------
 const data = await loadData();
 fs.mkdirSync(OUT, { recursive: true });
@@ -193,6 +267,12 @@ if (langs.length) {
   for (const [name, t] of Object.entries(THEMES)) fs.writeFileSync(path.join(OUT, `top-langs-${name}.svg`), langsCard(langs, t));
   wrote++;
 }
+const streak = streakData(data.calendar);
+if (streak) {
+  for (const [name, t] of Object.entries(THEMES)) fs.writeFileSync(path.join(OUT, `streak-${name}.svg`), streakCard(streak, t));
+  wrote++;
+}
+console.log(JSON.stringify({ streak: streak && { total: streak.total, first: streak.first, cur: streak.cur, best: streak.best } }));
 console.log(JSON.stringify({ repos: data.repos, stars: data.stars, contrib: data.contrib, langs: langs.map((l) => `${l.name} ${l.pct.toFixed(1)}%`) }));
 if (!wrote) {
   console.error("no data could be fetched, keeping the previous cards");

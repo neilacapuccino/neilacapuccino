@@ -106,8 +106,8 @@ const barista = {
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://streak-stats.demolab.com?user=neilacapuccino&background=231A17&border=3A2C26&stroke=3A2C26&ring=F2A7B8&fire=F2A7B8&currStreakNum=F8EDE2&sideNums=F8EDE2&currStreakLabel=D9B38C&sideLabels=D9B38C&dates=A48877&border_radius=16">
-    <img src="https://streak-stats.demolab.com?user=neilacapuccino&background=FFF8F0&border=EFE0CF&stroke=EFE0CF&ring=E58FA5&fire=E58FA5&currStreakNum=4B2E24&sideNums=4B2E24&currStreakLabel=8A5A44&sideLabels=8A5A44&dates=B08A70&border_radius=16" height="170" alt="contribution streak">
+    <source media="(prefers-color-scheme: dark)" srcset="./profile/streak-dark.svg">
+    <img src="./profile/streak-light.svg" height="150" alt="contribution streak">
   </picture>
 </p>
 

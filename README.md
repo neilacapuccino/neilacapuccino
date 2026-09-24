@@ -18,22 +18,6 @@
   <img src="./assets/divider-light.svg" width="100%" alt="">
 </picture>
 
-### ✦ about me <sub><sup>自己紹介</sup></sub>
-
-</div>
-
-```ts
-const barista = {
-  role: "full-stack developer",
-  daily: ["TypeScript", "Next.js", "React", "tRPC", "Prisma", "Tailwind CSS", "PostgreSQL"],
-  alsoInto: ["UI design", "Photoshop", "API design", "security", "deployment"],
-  alsoShipped: ["Flutter", "Python", "PyTorch", "YOLOv5"],
-  fuel: "cappuccino",
-} as const;
-```
-
-<div align="center">
-
 ### ✦ growing grass <sub><sup>草</sup></sub>
 
 <p align="center">
